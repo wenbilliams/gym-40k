@@ -1,4 +1,5 @@
 from gym_40k.engine.position import Position
+from gym_40k.engine.model_type import ModelType
 
 class Model():
   """Base Warhammer 40K Model"""
@@ -21,6 +22,9 @@ class Model():
     self.name            = "Base human"
     self.team            = 0
 
+    self.type            = ModelType.Infantry
+
+    self.flying          = False
     self.in_close_combat = False
 
     self.position = Position()
