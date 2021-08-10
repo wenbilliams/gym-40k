@@ -22,11 +22,14 @@ class Model():
     armor_save = 5,
     invul_save = 0,
     feel_no_pain = 6,
-    weapons = []
+    weapons = [],
+    position
     ):
   
     # TODO - Buffs, Debuggs, healing
     self.wounds          = wounds
+    self.max_wounds          = wounds
+
     self.base_size       = base_size
     self.move            = move
     self.weapon_skill    = weapon_skill
@@ -39,34 +42,77 @@ class Model():
     self.invul_save      = invul_save
     self.feel_no_pain    = feel_no_pain
     self.weapons         = weapons
-  
     self.name            = name
     self.team            = team
     self.type            = type
     self.flying          = flying
     self.in_close_combat = False
+    self.alive           = True
 
-    # These are attacks placed on this model 
-    self.attacks         = []
+    # These are attack objects placed on this model 
+    self.unresolved_attacks = []
 
+    # These are ints, each one being a quantity of damage
+    self.unresolved_wounds  = []
+    self.position = position
 
-    self.position = Position()
+  def roll_armor_save(ap):
+    die = Dice(1,6)
+    to_save = self.armor_save
+    to_save += ap
+    if self.invul_save:
+      if self.invul_save < to_save:
+        so_save = invul_save
+
+    return die.roll() >= to_save
+
+  def roll_feel_no_pain():
+    die = Dice(1,6)
+    if self.feel_no_pain:
+      if self.invul_save < to_save:
+        so_save = invul_save
+
+    return die.roll() >= to_save
 
   def add_attack(attack):
-    self.attacks.append(attack)
+    self.unresolved_attacks.append(attack)
 
   def resolve_attacks():
-    for attack in self.attacks:
+    for attack in self.unresolved_attacks:
       print(self.name + " resolving attack: " + attack)
 
       if attack.roll_to_hit():
         if attack.roll_to_wound():
-          
+          # TODO - Select which save to allocate:
+          if not roll_armor_save(attack.ap):
+            self.unresolved_wounds.append(attack.damage)
+          else:
+            print("Passed armor save")
         else:
           print("Failed to wound")
       else:
         print("Attack Missed")
 
-      
-      # Roll to hit
-      # 
+  def resolve_death():
+    # Resolve OnDeath abilities - Explodes, revival, etc.
+    self.alive = False
+    self.in_close_combat = False
+    self.wounds = 0
+
+    # Move off table - Identity position
+    self.position = Position()
+
+  def resolve_wounds():
+    # TODO - How do we determine the order in which wounds are resolved
+    for damage in self.unresolved_wounds:
+      if roll_feel_no_pain():
+        print("Felt no pain")
+      else:
+        # TODO - Wound reduction abilities
+        self.wounds -= damage
+
+        if self.wounds <= 0:
+          resolve_death()
+          break
+
+    self.unresolved_wounds.clear()

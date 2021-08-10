@@ -8,7 +8,7 @@ class Attack():
       self,
       strength,
       damage,
-      random_damage,
+      random_quantity_damage,
       source_model,
       target_model,
       attack_abilities,
@@ -17,7 +17,7 @@ class Attack():
 
       self.strength = strength
       self.damage = damage
-      self.random_damage = random_damage
+      self.random_quantity_damage = random_quantity_damage
       self.source_model = source_model
       self.target_model = target_model
       self.attack_abilities = attack_abilities
@@ -35,15 +35,18 @@ class Attack():
       # TODO - Extra modifiers here
       die = Dice(1,6)
 
-      if target_model.toughness >= self.strength * 2:
+      if self.target_model.toughness >= self.strength * 2:
           to_wound = 6
-      elif target_model.toughness > self.strength:
+      elif self.target_model.toughness > self.strength:
           to_wound = 5
-      elif target_model.toughness == self.strength:
+      elif self.target_model.toughness == self.strength:
           to_wound = 4
-      elif target_model.toughness <= self.strength / 2:
+      elif self.target_model.toughness <= self.strength / 2:
           to_wound = 2
       else:
           to_wound = 3
 
       return die.roll() >= to_wound
+
+  def resolve_damage():
+      return resolveRandomQuantity(self.random_quantity_damage, self.damage)

@@ -4,9 +4,6 @@ from setuptools import setup
 if sys.version_info < (3, 6):
     raise Exception("Only Python 3.6 and above is supported.")
 
-
-install_requires = []
-
 setup(
     name="gym_40k",
     version="0.0.1",
