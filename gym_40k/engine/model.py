@@ -21,9 +21,7 @@ class Model():
     self.weapons         = []
     self.name            = "Base human"
     self.team            = 0
-
     self.type            = ModelType.Infantry
-
     self.flying          = False
     self.in_close_combat = False
 
