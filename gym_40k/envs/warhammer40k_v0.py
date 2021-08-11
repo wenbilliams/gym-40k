@@ -9,7 +9,8 @@ class Warhammer40KV0(gym.Env):
   def __init__(self, arg1, arg2):
     super(Warhammer40KV0, self).__init__()
 
-    self.reward_range = (0, MAX_ACCOUNT_BALANCE)
+    # TODO - Scale reward range to not overfit
+    self.reward_range = (0, 1)
 
     # Create Game State
 
@@ -40,9 +41,10 @@ class Warhammer40KV0(gym.Env):
   # info (dict): diagnostic information useful for debugging. It can sometimes be useful for learning (for example, it might contain the raw probabilities behind the environment’s last state change). However, official evaluations of your agent are not allowed to use this for learning.
   def step(self, action):
     # Execute one time step within the environment
-
+    ...
   def reset(self):
     # Reset the state of the environment to an initial state
-
+    ...
   def render(self, mode='human', close=False):
     # Render the environment to the screen
+    ...

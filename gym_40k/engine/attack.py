@@ -1,4 +1,4 @@
-from gym_40k.engine.dice import Dice
+from gym_40k.engine.die import Die
 from gym_40k.engine.model import Model
 
 class Attack():
@@ -28,12 +28,12 @@ class Attack():
 
   def roll_to_hit():
       # TODO - Extra modifiers here
-      die = Dice(1,6)
-      return source_model.ballistic_skill <= die.roll()
+      die = Die(1,6)
+      return self.source_model.ballistic_skill <= die.roll()
 
   def roll_to_wound():
       # TODO - Extra modifiers here
-      die = Dice(1,6)
+      die = Die(1,6)
 
       if self.target_model.toughness >= self.strength * 2:
           to_wound = 6

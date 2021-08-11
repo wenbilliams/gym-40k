@@ -11,7 +11,7 @@ class Model():
     type    = ModelType.Infantry,
     flying  = False,
     wounds = 1,
-    base_size = 1,
+    base_size_mm = 28,
     move = 6,
     weapon_skill = 4,
     ballistic_skill = 4,
@@ -23,14 +23,14 @@ class Model():
     invul_save = 0,
     feel_no_pain = 6,
     weapons = [],
-    position
+    position = Position()
     ):
   
     # TODO - Buffs, Debuggs, healing
     self.wounds          = wounds
     self.max_wounds          = wounds
 
-    self.base_size       = base_size
+    self.base_size_mm    = base_size_mm
     self.move            = move
     self.weapon_skill    = weapon_skill
     self.ballistic_skill = ballistic_skill
@@ -57,7 +57,7 @@ class Model():
     self.position = position
 
   def roll_armor_save(ap):
-    die = Dice(1,6)
+    die = Die(1,6)
     to_save = self.armor_save
     to_save += ap
     if self.invul_save:
@@ -67,11 +67,9 @@ class Model():
     return die.roll() >= to_save
 
   def roll_feel_no_pain():
-    die = Dice(1,6)
-    if self.feel_no_pain:
-      if self.invul_save < to_save:
-        so_save = invul_save
-
+    die = Die(1,6)
+    if self.feel_no_pain > 0:
+      to_save = self.feel_no_pain
     return die.roll() >= to_save
 
   def add_attack(attack):
